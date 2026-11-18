@@ -18,7 +18,8 @@ La ville de Seattle vise la neutralité carbone en 2050. À partir des relevés 
 ├── notebooks/
 │   └── 00_description_variables.ipynb   # Résumé des variables (fourni)
 ├── slides/                        # Support de la présentation orale
-├── requirements.txt
+├── pyproject.toml                 # Dépendances (gérées avec uv)
+├── uv.lock                        # Versions exactes verrouillées
 └── README.md
 ```
 
@@ -34,14 +35,21 @@ La ville de Seattle vise la neutralité carbone en 2050. À partir des relevés 
 
 ## Installation et exécution
 
+Le projet utilise [uv](https://docs.astral.sh/uv/) pour gérer Python et les dépendances.
+
 ```bash
+# Installer uv si besoin
+curl -LsSf https://astral.sh/uv/install.sh | sh     # Windows : powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
+
 git clone https://github.com/gvannesson/brief-seattle.git
 cd brief-seattle
-python -m venv .venv
-source .venv/bin/activate        # Windows : .venv\Scripts\activate
-pip install -r requirements.txt
-jupyter notebook
+uv sync                      # crée .venv et installe les versions exactes de uv.lock
+uv run jupyter notebook
 ```
+
+Avec VS Code, sélectionner le kernel `.venv` du projet après `uv sync`.
+
+Ajouter une dépendance : `uv add <paquet>` (puis committer `pyproject.toml` et `uv.lock`).
 
 Les notebooks utilisent un `random_state` fixé pour garantir la reproductibilité.
 
